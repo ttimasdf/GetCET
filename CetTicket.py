@@ -3,8 +3,8 @@
 
 import requests
 import CetConfig
-from ctypes import CDLL, c_char, c_int, c_long, byref, pointer, \
-    create_string_buffer, Structure, Union, sizeof
+from ctypes import CDLL, c_char, c_int, byref, \
+    create_string_buffer, Structure, Union
 
 DES_cblock = c_char * 8
 DES_LONG = c_int
@@ -145,5 +145,5 @@ class CetTicket(object):
 
 if __name__ == '__main__':
     ct = CetTicket()
-    print ct.find_ticket_number(b'浙江', b'浙江海洋学院', b'XXX', cet_type=2)
+    print ct.find_ticket_number(b'浙江', b'浙江海洋学院', b'XXX', cet_type=1)
     print ct.get_score('330400XXXXXXXXX', b'XXX')
