@@ -36,3 +36,4 @@ PROVICE = {
 }
 
 SEARCH_URL = 'http://find.cet.99sushe.com/search'
+SCORE_URL = 'http://cet.99sushe.com/find'

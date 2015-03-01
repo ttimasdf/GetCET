@@ -116,6 +116,34 @@ class CetTicket(object):
 
         return ticket_number
 
+    def get_score(self, ticket_number, name):
+        if isinstance(name, unicode):
+            name = name.encode('gb2312')
+        else:
+            name = name.decode('utf-8').encode('gb2312')
+
+        params_dict = {
+            'id': ticket_number,
+            'name': name[:4]
+        }
+
+        resp = requests.post(url=CetConfig.SCORE_URL,
+                             data=params_dict,
+                             headers={'Referer': 'http://cet.99sushe.com/'})
+        score_data = resp.content.decode('gb2312').encode('utf-8')
+        score_data = score_data.split(',')
+
+        score = {
+            'name': score_data[6],
+            'school': score_data[5],
+            'Listening': score_data[1],
+            'Reading': score_data[2],
+            'Writing': score_data[3],
+            'Total': score_data[4]
+        }
+        return score
+
 if __name__ == '__main__':
     ct = CetTicket()
     print ct.find_ticket_number(b'浙江', b'浙江海洋学院', b'XXX', cet_type=2)
+    print ct.get_score('330400XXXXXXXXX', b'XXX')
