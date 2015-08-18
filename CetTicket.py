@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # coding=utf-8
-
-import requests
 import CetConfig
 from ctypes import CDLL, c_char, c_int, byref, \
     create_string_buffer, Structure, Union
+
+try:
+    import requests
+except ImportError:
+    print 'You need to install requests to use full functions.'
 
 DES_cblock = c_char * 8
 DES_LONG = c_int
@@ -82,6 +85,21 @@ class CetCipher(object):
 
     def encrypt_request_data(self, request_data):
         return self.process_data(request_data, self.request_data_key, is_enc=self.ENCRYPT)
+
+
+class CetCipher(CetCipher):
+
+    ticket_number_enc_key = '> buvOQ^'
+    ticket_number_dec_key = '(YesuNRY'
+
+    def encrypt_ticket_number(self, ticket_number):
+        ciphertext = self.process_data(ticket_number,
+                                       self.ticket_number_enc_key, is_enc=self.ENCRYPT)
+        return ciphertext
+
+    def decrypt_ticket_number(self, ciphertext):
+        ciphertext = ciphertext[2:]
+        return self.process_data(ciphertext, self.ticket_number_dec_key, is_enc=self.DECRYPT)
 
 
 class CetTicket(object):
