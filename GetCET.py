@@ -32,7 +32,12 @@ class ScoreHandler(BaseHandler):
     def post(self, *args, **kwargs):
         ticket = self.get_body_argument('ticket', None)
         name = self.get_body_argument('name', None)
-        result = yield self.executor.submit(CetTicket.get_score, ticket, name)
+        def get_score(ticket, name):
+            try:
+                return CetTicket.get_score(ticket, name)
+            except:
+                return dict(error=True)
+        result = yield self.executor.submit(get_score, ticket, name)
         self.render('result.html', result=result)
 
 
