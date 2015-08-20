@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 
 ENTRYPOINT ["python", "GetCET.py"]
 EXPOSE 8081
-CMD ["--port=8081"]
+CMD ["--address=0.0.0.0", "--port=8081"]
