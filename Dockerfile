@@ -7,6 +7,6 @@ WORKDIR /GetCet
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "./GetCet.py"]
+ENTRYPOINT ["python", "GetCET.py"]
 EXPOSE 8081
 CMD ["--port=8081"]

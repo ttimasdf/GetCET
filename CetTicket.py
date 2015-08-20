@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 import CetConfig
+from random import randint
 from ctypes import CDLL, c_char, c_int, byref, \
     create_string_buffer, Structure, Union
 
@@ -8,6 +9,13 @@ try:
     import requests
 except ImportError:
     print 'You need to install requests to use full functions.'
+
+
+def random_mac():
+    return '%.2X-%.2X-%.2X-%.2X-%.2X-%.2X' % (randint(0, 16), randint(0, 16), 
+                                              randint(0, 16), randint(0, 16), 
+                                              randint(0, 16), randint(0, 16))
+
 
 DES_cblock = c_char * 8
 DES_LONG = c_int
@@ -89,7 +97,7 @@ class CetCipher(object):
 
 class CetCipher(CetCipher):
 
-    ticket_number_enc_key = '> buvOQ^'
+    ticket_number_enc_key = ')XdsuORX'
     ticket_number_dec_key = '(YesuNRY'
 
     def encrypt_ticket_number(self, ticket_number):
@@ -99,7 +107,7 @@ class CetCipher(CetCipher):
 
     def decrypt_ticket_number(self, ciphertext):
         ciphertext = ciphertext[2:]
-        return self.process_data(ciphertext, self.ticket_number_dec_key, is_enc=self.DECRYPT)
+        return self.process_data(ciphertext, self.ticket_number_enc_key, is_enc=self.DECRYPT)
 
 
 class CetTicket(object):
@@ -127,9 +135,9 @@ class CetTicket(object):
         cipher = CetCipher()
 
         province_id = CetConfig.PROVINCE[province]
-        param_data = u'type=%d&provice=%d&school=%s&name=%s&examroom=%s' % (cet_type,
-                                                                            province_id,
-                                                                            school, name, examroom)
+        param_data = u'type=%d&provice=%d&school=%s&name=%s&examroom=%s&m=%s' % (cet_type, province_id,
+                                                                                                school, name, 
+                                                                                                examroom, random_mac())
 
         param_data = param_data.encode('gb2312')
         encrypted_data = cipher.encrypt_request_data(param_data)
