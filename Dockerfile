@@ -1,4 +1,4 @@
-FROM docker/debian:latest
+FROM debian:latest
 
 RUN apt-get -y update && apt-get install -y python && pip install -r requirements.txt
 
