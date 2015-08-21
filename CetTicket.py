@@ -139,7 +139,7 @@ class CetTicket(object):
                                                                                                 school, name, 
                                                                                                 examroom, random_mac())
 
-        param_data = param_data.encode('gb2312')
+        param_data = param_data.encode('gbk')
         encrypted_data = cipher.encrypt_request_data(param_data)
 
         resp = requests.post(url=cls.search_url, data=encrypted_data)
@@ -152,7 +152,7 @@ class CetTicket(object):
 
     @classmethod
     def get_score(cls, ticket_number, name):
-        name = name.encode('gb2312')
+        name = name.encode('gbk')
 
         params_dict = {
             'id': ticket_number,
@@ -162,7 +162,7 @@ class CetTicket(object):
         resp = requests.post(url=cls.score_url,
                              data=params_dict,
                              headers={'Referer': 'http://cet.99sushe.com/'})
-        score_data = resp.content.decode('gb2312')
+        score_data = resp.content.decode('gbk')
         if len(score_data) < 10:
             return dict(error=True)
         score_data = score_data.split(',')
