@@ -103,7 +103,7 @@ class CetTicket(object):
     """
 
     search_url = 'http://find.cet.99sushe.com/search'
-    score_url = 'http://cet.99sushe.com/find'
+    score_url = 'http://cet.99sushe.com/findscore'
 
     CET4 = 1
     CET6 = 2
