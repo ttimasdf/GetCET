@@ -39,7 +39,6 @@ class DES_key_schedule(Structure):
 
 
 class CetCipher(object):
-
     ticket_number_key = '(YesuNRY'
     request_data_key = '?!btwNP^'
 
@@ -95,21 +94,6 @@ class CetCipher(object):
         return self.process_data(request_data, self.request_data_key, is_enc=self.ENCRYPT)
 
 
-class CetCipher(CetCipher):
-
-    ticket_number_enc_key = ')XdsuORX'
-    ticket_number_dec_key = '(YesuNRY'
-
-    def encrypt_ticket_number(self, ticket_number):
-        ciphertext = self.process_data(ticket_number,
-                                       self.ticket_number_enc_key, is_enc=self.ENCRYPT)
-        return ciphertext
-
-    def decrypt_ticket_number(self, ciphertext):
-        ciphertext = ciphertext[2:]
-        return self.process_data(ciphertext, self.ticket_number_enc_key, is_enc=self.DECRYPT)
-
-
 class CetTicket(object):
 
     """
@@ -138,12 +122,10 @@ class CetTicket(object):
         param_data = u'type=%d&provice=%d&school=%s&name=%s&examroom=%s&m=%s' % (cet_type, province_id,
                                                                                                 school, name, 
                                                                                                 examroom, random_mac())
-
         param_data = param_data.encode('gbk')
         encrypted_data = cipher.encrypt_request_data(param_data)
 
-        resp = requests.post(url=cls.search_url, data=encrypted_data)
-
+        resp = requests.post(url=cls.search_url, data=encrypted_data, headers={'User-Agent': 'NicoNicoNi'})
         ticket_number = cipher.decrypt_ticket_number(resp.content)
         if ticket_number == '':
             raise TicketNotFound('Cannot find ticket number.')
