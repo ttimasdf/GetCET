@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 # coding=utf-8
+
+import os
+import ctypes
+import random
 import CetConfig
-from random import randint
-from ctypes import CDLL, c_char, c_int, byref, \
-    create_string_buffer, Structure, Union
+from ctypes import CDLL, c_char, c_int, byref, create_string_buffer, Structure, Union
 
 try:
     import requests
 except ImportError:
-    print 'You need to install requests to use full functions.'
+    print('You need to install requests to use full functions.')
 
 
 def random_mac():
-    return '%.2X-%.2X-%.2X-%.2X-%.2X-%.2X' % (randint(0, 16), randint(0, 16), 
-                                              randint(0, 16), randint(0, 16), 
-                                              randint(0, 16), randint(0, 16))
+    return '-'.join(['%.2X' % random.randint(0, 16) for i in xrange(6)])
 
 
 DES_cblock = c_char * 8
@@ -63,7 +63,6 @@ class CetCipher(object):
         indata = create_string_buffer(indata, length)
         outdata = create_string_buffer(length)
         n = c_int(0)
-
         key = DES_cblock(*tuple(key))
         key_schedule = DES_key_schedule()
 
@@ -99,7 +98,7 @@ class CetTicket(object):
     """
         usage:
         ct = CetTicket()
-        print ct.find_ticket_number(b'浙江', b'浙江海洋学院', b'XXX', cet_type=2)
+        print ct.find_ticket_number('浙江', '浙江海洋学院', 'XXX', cet_type=2)
     """
 
     search_url = 'http://find.cet.99sushe.com/search'
@@ -107,6 +106,8 @@ class CetTicket(object):
 
     CET4 = 1
     CET6 = 2
+
+    USER_AGENT = os.environ.get('USER_AGENT', '高坂穗乃果')
 
     @classmethod
     def find_ticket_number(cls, province, school, name, examroom='', cet_type=1):
@@ -125,7 +126,7 @@ class CetTicket(object):
         param_data = param_data.encode('gbk')
         encrypted_data = cipher.encrypt_request_data(param_data)
 
-        resp = requests.post(url=cls.search_url, data=encrypted_data, headers={'User-Agent': 'NicoNicoNi'})
+        resp = requests.post(url=cls.search_url, data=encrypted_data, headers={'User-Agent': cls.USER_AGENT})
         ticket_number = cipher.decrypt_ticket_number(resp.content)
         if ticket_number == '':
             raise TicketNotFound('Cannot find ticket number.')
