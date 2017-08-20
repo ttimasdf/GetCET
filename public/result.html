@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>GetCET!</title>
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/school.js"></script>
+    <script src="js/global.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>GetCET!</h1>
+
+            <p class="lead">To help you get CET result more flexible.</p>
+        </div>
+        <div class="page-body">
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-2 col-lg-2"></div>
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel panel-heading">
+                                <div class="panel-title">成绩单</div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    {{if not .Error}}
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td>{{.Name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>学校</td>
+                                        <td>{{.School}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>听力</td>
+                                        <td>{{.Listening}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>阅读</td>
+                                        <td>{{.Reading}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>写作</td>
+                                        <td>{{.Writing}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>总分</td>
+                                        <td>{{.Total}}</td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>未找到您的成绩</td>
+                                    </tr>
+                                    {{end}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">
+            <div class="container container-fluid">
+                <h4>GetCET!<span class="glyphicon glyphicon-envelope" style="padding: 5px;"></span>
+                    <small><b><a href="https://github.com/ttimasdf/GetCET">Github</a></b></small>
+                </h4>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
